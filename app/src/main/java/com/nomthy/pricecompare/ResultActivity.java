@@ -14,8 +14,6 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -45,7 +43,6 @@ public class ResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
-        //isStorageAccessPermissionGranted();
         txtView = (TextView)findViewById(R.id.txtTest);
         Intent intent = getIntent();
         String flag = intent.getStringExtra("flag");
@@ -64,6 +61,7 @@ public class ResultActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+        //Clear all variables to stop resending image to server.
         image = null;
         imageString = null;
         imageData = null;
@@ -72,6 +70,7 @@ public class ResultActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
+        //Clear all variables to stop resending image to server.
         image = null;
         imageString = null;
         imageData = null;
@@ -121,6 +120,7 @@ public class ResultActivity extends AppCompatActivity {
         });
     }
 
+    //Get bitmap of image from memory
     Bitmap getImageBitMap(){
         try {
             File sd = Environment.getExternalStorageDirectory();
@@ -136,6 +136,7 @@ public class ResultActivity extends AppCompatActivity {
         return image;
     }
 
+    //Image can be efficiently sent as a Base64 byte string which will then converted back to jpg on the server
     private String imageToString(Bitmap bitmap){
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
