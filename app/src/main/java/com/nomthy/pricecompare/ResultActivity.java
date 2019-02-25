@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -44,6 +45,10 @@ public class ResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         txtView = (TextView)findViewById(R.id.txtTest);
+
+        //File sd = Environment.getExternalStorageDirectory();
+        //displayImage(sd + "/pchk.jpg");
+
         Intent intent = getIntent();
         String flag = intent.getStringExtra("flag");
         if (flag.equals("1")) {
@@ -88,6 +93,8 @@ public class ResultActivity extends AppCompatActivity {
                 Log.v(TAG, response);
                 progressDialog.dismiss();
                 progressDialog.cancel();
+                File sd = Environment.getExternalStorageDirectory();
+                displayImage(sd + "/pchk.jpg");
             }
         }, new Response.ErrorListener() {
             @Override
@@ -125,6 +132,7 @@ public class ResultActivity extends AppCompatActivity {
         try {
             File sd = Environment.getExternalStorageDirectory();
             File imageFile = new File(sd + "/pchk.jpg");
+
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             image = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), bmOptions);
             if(image == null) {
@@ -182,5 +190,20 @@ public class ResultActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         this.finish();
+    }
+
+    private void displayImage(String filePath){
+        File imgFile = new File(filePath);
+        if(imgFile.exists()){
+
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath()); //this is the bitmap for the image
+
+            ImageView myImage = (ImageView) findViewById(R.id.ivSearched);//your image view in the recycler view
+
+            myImage.setImageBitmap(myBitmap);//image set to the image view
+
+        }else {
+            Log.d(TAG, "displayImage: File does not exist");
+        }
     }
 }
